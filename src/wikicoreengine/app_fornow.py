@@ -1,5 +1,5 @@
 """
-top level app for devel purposes; we need session_manager and session context to be pypassed/fastshippedhtml/render functitons 
+top level app for devel purposes; we need session_manager and session context to be passed/fastshippedhtml/render functitons 
 """
 import os
 import logging
@@ -55,45 +55,45 @@ from .constant_keys import ITEMTYPE_DEFAULT
 app = view_function.app
 
 vf = view_function
-request = Dict()
-request.session_id = "abc"
-request.query_params._dict = Dict()
-request.query_params._dict.itemtype = ITEMTYPE_DEFAULT
-request.query_params._dict.contenttype = CONTENTTYPE_MARKDOWN
-startup_func()
+# request = Dict()
+# request.session_id = "abc"
+# request.query_params._dict = Dict()
+# request.query_params._dict.itemtype = ITEMTYPE_DEFAULT
+# request.query_params._dict.contenttype = CONTENTTYPE_MARKDOWN
+#startup_func()
 
-# ========================== store an entity =========================
-def store_new_wikiItem():
-    wp = vf.endpoint_wikiItem(request, item_name="TreeTree4")
-    _sm = wp.session_manager
-    _ss = _sm.stubStore
-    import ofjustpy as oj
-    #print(_ss.keys())
+# # ========================== store an entity =========================
+# def store_new_wikiItem():
+#     wp = vf.endpoint_wikiItem(request, item_name="TreeTree4")
+#     _sm = wp.session_manager
+#     _ss = _sm.stubStore
+#     import ofjustpy as oj
+#     #print(_ss.keys())
 
-    # fill in user inputs
-    comment_input_ = oj.dget(_ss, "/tlctx/body/comment_input")
-    comment_input_.target.value = "some comment value"
+#     # fill in user inputs
+#     comment_input_ = oj.dget(_ss, "/tlctx/body/comment_input")
+#     comment_input_.target.value = "some comment value"
 
-    content_input_ = oj.dget(_ss, "/tlctx/body/content_input")
-    content_input_.target.value = "#ektitle\n##subtitle\npara graph etc."
+#     content_input_ = oj.dget(_ss, "/tlctx/body/content_input")
+#     content_input_.target.value = "#ektitle\n##subtitle\npara graph etc."
 
-    summary_input_ = oj.dget(_ss, "/tlctx/body/summary_input")
-    summary_input_.target.value = "some summary value"
+#     summary_input_ = oj.dget(_ss, "/tlctx/body/summary_input")
+#     summary_input_.target.value = "some summary value"
 
-    tags_input_ = oj.dget(_ss, "/tlctx/body/tags_input")
-    tags_input_.target.value = "some tags value"
+#     tags_input_ = oj.dget(_ss, "/tlctx/body/tags_input")
+#     tags_input_.target.value = "some tags value"
 
-    # ================================ end ===============================
-    btn_stub_ = oj.dget(_ss, "/tlctx/body/submit")
-    print (btn_stub_)
-    msg = Dict()
-    msg.page = wp
-    btn_stub_.target.on_click(msg)
-    # =============================== done ===============================
+#     # ================================ end ===============================
+#     btn_stub_ = oj.dget(_ss, "/tlctx/body/submit")
+#     print (btn_stub_)
+#     msg = Dict()
+#     msg.page = wp
+#     btn_stub_.target.on_click(msg)
+#     # =============================== done ===============================
 
 
-def render_existing_wikiItem():
-    wp = vf.endpoint_wikiItem(request, item_name="TreeTree4")
+# def render_existing_wikiItem():
+#     wp = vf.endpoint_wikiItem(request, item_name="TreeTree4")
 
 
 #render_existing_wikiItem()

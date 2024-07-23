@@ -281,6 +281,26 @@ def indexes(storage_base_dir):
         with indexes_map[idx_name].searcher() as searcher:
             return searcher.document(**kw)
 
+    def remove_revision(revid):
+        """
+        given a revid -- remove the revision
+        this is illegal -- could lead to index in
+        inconsistent state.
+        """
+        writer = AsyncWriter(indexes_map[ALL_REVS])
+        #writer = indexes_map[ALL_REVS].writer()
+        with writer as writer:
+            # Assuming the field name for revid is "revid"
+            writer.delete_by_term("revid", revid)
+
+        writer = AsyncWriter(indexes_map[ALL_REVS])
+
+        with writer as writer:
+        # Assuming the field name for revid is "revid"
+            writer.delete_by_term("revid", revid)
+
+            
+        
     def index_revision(meta, content, async_=True):
         """
         Index a single revision, add it to all-revs and latest-revs index.
@@ -484,6 +504,7 @@ def indexes(storage_base_dir):
     indexes.index_revision = index_revision
     indexes.retry_document_search_until_succeed = retry_document_search_until_succeed
     indexes.indexible_content = indexible_content
+    indexes.remove_revision = remove_revision
     indexes.query = query
     indexes.save = save
 

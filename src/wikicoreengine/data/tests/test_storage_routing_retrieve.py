@@ -5,17 +5,25 @@ from wikicoreengine.data.storage_routing import storage_routing
 
 from wikicoreengine.constant_keys import NAME, NAMESPACE, NAME_EXACT, NAMESPACE_DEFAULT, CURRENT, CONTENTTYPE, REVID
 from wikicoreengine.Name import CompositeName
+from wikicoreengine.data.indexes import indexes
 
 
 storage_base_dir = f"{BACKEND_DATADIR_BASE}/{WIKINAME}"
-# storage backend 
+storage_base_dir = f"{BACKEND_DATADIR_BASE}/{WIKINAME}"
 storage_routing(NAMESPACES, storage_base_dir)
+indexes(storage_base_dir)
 
-metaid =  "94ac762941934792aee012637f23a53b"
-meta, data = storage_routing.namespace_storage_map[''].retrieve(metaid)
 
-print ("data type =", type(data))
-print ("data =", data)
+# storage backend
+name = "Home2"
+
+fqcn = CompositeName(NAMESPACE_DEFAULT, NAME_EXACT, name)
+whoosh_doc = indexes.document_search(**fqcn.query_terms)
+
+meta, data = storage_routing.retrieve(NAMESPACE_DEFAULT, whoosh_doc['revid'])
+
+print ("data = ", data)
+print ("content = ", whoosh_doc['content'])
 
 
 

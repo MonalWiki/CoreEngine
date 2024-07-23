@@ -33,6 +33,12 @@ def create_sqlite_db(db_filepath):
                     conn.execute(f"""insert into  {tblname} values ("{key}", "{value}")""")
                     pass
 
+                def update_item(key, value):
+                    value = base64.b64encode(value).decode()  # a str in base64 encoding
+                    conn.execute(f"""UPDATE {tblname} SET value="{value}" WHERE key="{key}"
+                    """)
+                    conn.commit()  # Commit the transaction to persist the changes
+
                 def get_item(key):
                     rows = list(conn.execute(f"select value from {tblname} where key=?", (key,)))
                     if not rows:
@@ -49,6 +55,7 @@ def create_sqlite_db(db_filepath):
                 tbl_manager.set_item = set_item
                 tbl_manager.get_item = get_item
                 tbl_manager.drop_table = drop_table
+                tbl_manager.update_item = update_item
             tbl_manager()
             return tbl_manager
         def commit():
@@ -73,7 +80,6 @@ def create_fs_storage(data_dir, **kwargs):
         storage.set_item = set_item
         storage.get_item = get_item
         storage.has_item = has_item
-
     storage()
     return storage
     
@@ -177,13 +183,20 @@ def create_storage(storage_base_dir, storage_type=STORAGETYPE, storage_args=STOR
             dataid = meta[DATAID]
             data = datatbl_manager.get_item(dataid)
             return meta, data
-        
+
+
+        def update_item(dataid, data):
+            datatbl_manager.update_item(dataid, data)
+            
+
+
         def commit():
             for db_manager in db_managers:
                 db_manager.commit()
         store_manager.store_meta = store_meta
         store_manager.store = store
         store_manager.retrieve = retrieve
+        store_manager.update_item = update_item
         store_manager.datatbl_manager = datatbl_manager
         store_manager.commit = commit
     store_manager()

@@ -41,3 +41,23 @@ def add_md_item_to_wiki(name, tags, summary, comment, md_content):
     whoosh_doc = indexes.document_search(**fqcn.query_terms)
     print ("whoosh_doc = ", whoosh_doc)
 
+
+def overwrite_wiki_content(name, tag, summary, comment, md_content):
+    """
+    a wiki item already exists -- replace with new content
+    """
+    fqcn = CompositeName(NAMESPACE_DEFAULT, NAME_EXACT, name)
+    # search for existing doc
+    whoosh_doc = indexes.document_search(**fqcn.query_terms)
+
+    # retrieve existing 
+    meta, data = storage_routing.retrieve(NAMESPACE_DEFAULT, whoosh_doc['revid'])
+
+    # replace the content in sqlite dbstore
+    storage_routing.update_item(NAMESPACE_DEFAULT, whoosh_doc['dataid'], md_content)
+    # remove existing index
+    indexes.remove_revision(whoosh_doc['revid'])
+    itemtype =  'default'
+    contenttype =  'text/x-markdown;charset=utf-8'
+    wikiitem = WikiItem.create(fqcn, itemtype=itemtype, contenttype=contenttype)
+    indexes.save(wikiitem, meta, data,  storage_revid = whoosh_doc['revid'])
