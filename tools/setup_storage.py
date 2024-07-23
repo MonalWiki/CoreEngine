@@ -1,7 +1,7 @@
 import os
 #import indexes
 
-from wikicoreengine import BACKEND_DATADIR_BASE, WIKINAME, NAMESPACES, STORAGETYPE, STORAGEARGS
+from wikicoreengine.wikicfg import BACKEND_DATADIR_BASE, WIKINAME, NAMESPACES, STORAGETYPE, STORAGEARGS
 from storage import StorageType, create_storage
 import sys
 def build_dir(dir_path):

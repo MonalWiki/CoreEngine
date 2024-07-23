@@ -5,7 +5,7 @@ from addict import Dict
 import os
 #import indexes
 from whoosh.filedb.filestore import FileStorage
-from wikicoreengine import BACKEND_DATADIR_BASE, WIKINAME, NAMESPACES, STORAGETYPE, STORAGEARGS
+from wikicoreengine.wikicfg import BACKEND_DATADIR_BASE, WIKINAME, NAMESPACES, STORAGETYPE, STORAGEARGS
 from wikicoreengine.constant_keys import LATEST_REVS, ALL_REVS
 from wikicoreengine.data.IndexSchema import latest_revisions_schema, all_revisions_schema
 

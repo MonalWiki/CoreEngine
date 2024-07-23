@@ -4,7 +4,6 @@ from .wp_template_components import page_builder, render_nav_bar, render_footer
 
 
 
-import justpy as jp
 import ofjustpy as oj
 import ofjustpy_react as ojr
 from . import actions
@@ -16,8 +15,8 @@ from ..item import WikiItem
 from ..contenttypes import NonExistent as Content_NonExistent, CONTENTTYPE_NONEXISTENT
 from py_tailwind_utils import H,full, bold,  shadow, bdr, bold, fz, fw, W, mr, st
 
-from dependency_injector import containers, providers
-from dependency_injector.wiring import Provide, inject
+#from dependency_injector import containers, providers
+#from dependency_injector.wiring import Provide, inject
 #from ..dependencies import Container
 
 
@@ -39,7 +38,7 @@ def show_wikiItem(wikiItem):
         with oj.uictx("body") as bodyCtx:
             assert  wikiItem.content.contenttype != CONTENTTYPE_NONEXISTENT
             print("show this data online = ", wikiItem.rev.data)
-            oj.Span_("panel",  text="i am a span:dryrun")
+            oj.PD.Span(key = "panel",  text="i am a span:dryrun")
             print("chasing contenttype and data")
             print ("===> contenttype = ", wikiItem.content.contenttype)
             print ("===>  = ", wikiItem.rev.revid)
@@ -110,165 +109,83 @@ def modify_wikiItem(wikiItem):
                                               )
 
 
-            #gm<-- generalmeta
-            gm_title_ = oj.Halign_(oj.Span_("gm_title_body",
-                                         text="General Meta",
-                                         pcp=[fz.lg, fw.bold]
-                                        ),
-                                align="start",
-                                   key="itemtitle",
-                                   pcp=[mr/st/8])
-            gm_divider_ = oj.Divider_("gm_divider")
-            gm_summary_ = oj.Subsubsection_("gm_summary", "Summary",
-                                            oj.Textarea_("summary_input", placeholder="enter summary for changes", pcp=[H/8]), pcp=[mr/st/8]
-                              )
-            gm_tags_ = oj.Subsubsection_("gm_tags", "Tags",
-                                         oj.Textarea_("tags_input",
-                                                      placeholder="enter tag for content",
-                                                      pcp=[H/8]),
-                                         pcp=[mr/st/4]
-
-                              )
-
+            # def on_submit_btnclick(dbref, msg):
+            #     userinput = Dict()
+            #     userinput.comment = _ictx.comment_input.target.value
+            #     userinput.content = _ictx.content_input.target.value
+            #     userinput.summary_input = _ictx.summary_input.target.value
+            #     userinput.tags = _ictx.tags_input.target.value
+            #     print(userinput)
+            #     print ("====================================")
+            #     pass
             def on_submit_btnclick(dbref, msg):
-                userinput = Dict()
-                userinput.comment = _ictx.comment_input.target.value
-                userinput.content = _ictx.content_input.target.value
-                userinput.summary_input = _ictx.summary_input.target.value
-                userinput.tags = _ictx.tags_input.target.value
-                print(userinput)
-                print ("====================================")
                 pass
             
-            submit_ =oj.Halign_(
-                oj.Button_("submit", text="Create item (add to wiki)").event_handle(oj.click, on_submit_btnclick),
-                pcp=[mr/st/4]
-            )
-                                
-
-            # panel is what hooks 
-            oj.Halign_(
-                oj.StackV_("panel_core",
-                           cgens=[title_,
-                                  divider_,
-                                  commentbox_,
-                                  contentbox_,
-                                  gm_title_,
-                                  gm_divider_,
-                                  gm_summary_,
-                                  gm_tags_,
-                                  submit_
-                                  ]),
-                key="panel",
-                pcp=[H/full])
+            #gm<-- generalmeta
+            gm_title = oj.Halign(oj.PC.Span(text="General Meta",
+                                              twsty_tags=[fz.lg, fw.bold]
+                                              ),
+                                  align="start",
+                                  twsty_tags=[mr/st/8]
+                                  )
             
-#             title_ = oj.Halign_(oj.Span_("itemtitle_body",
-#                                text=wikiItem.fqcn.fullname(),
-#                                         pcp=[fz.xl2, fw.bold]
-#                                         ),
-#                                 key="itemtitle")
-
-#             divider_ = oj.Divider_("title_divider")
-#             commentbox_ = oj.Subsubsection_("comment", "Comment",
-#                              oj.Textarea_("comment_input", placeholder="enter comments for wiki item here", pcp=[W/full, H/8])
-#                              )
-
-#             contentbox_ = oj.Subsubsection_("content", "Content",
-#                                             oj.Textarea_("content_input",
-#                                                          placeholder="enter wiki item content here", pcp=[H/32 ]),
-#                                             pcp = [mr/st/8]
-#                              )
-
-
-#             #gm<-- generalmeta
-#             gm_title_ = oj.Halign_(oj.Span_("gm_title_body",
-#                                          text="General Meta",
-#                                          pcp=[fz.lg, fw.bold]
-#                                         ),
-#                                 align="start",
-#                                    key="itemtitle",
-#                                    pcp=[mr/st/8])
-#             gm_divider_ = oj.Divider_("gm_divider")
-#             gm_summary_ = oj.Subsubsection_("gm_summary", "Summary",
-#                                             oj.Textarea_("summary_input", placeholder="enter summary for changes", pcp=[H/8]), pcp=[mr/st/8]
-#                               )
-#             gm_tags_ = oj.Subsubsection_("gm_tags", "Tags",
-#                                          oj.Textarea_("tags_input",
-#                                                       placeholder="enter tag for content",
-#                                                       pcp=[H/8]),
-#                                          pcp=[mr/st/4]
-
-#                               )
-
-#             @ojr.ReactDomino
-#             def on_submit_btnclick(dbref, msg):
-#                 userinput = Dict()
-#                 userinput.comment = _ictx.comment_input.target.value
-#                 userinput.content = _ictx.content_input.target.value
-#                 userinput.summary = _ictx.summary_input.target.value
-#                 userinput.tags = _ictx.tags_input.target.value
-#                 userinput.wikiItem = wikiItem
-#                 print ("==== userinput===")
-#                 print(userinput)
-#                 print ("====================================")
-#                 return "/modify_wiki_item", ojr.make_opaque_dict(userinput)
-
+            gm_divider = oj.Hr()
+            gm_summary = oj.PC.Subsubsection("Summary",
+                                            oj.AC.Textarea_(key="summary_input",
+                                                            placeholder="enter summary for changes",
+                                                            twsty_tags=[H/8]),
+                                              twsty_tags=[mr/st/8]
+                                              )
             
-#             submit_ =oj.Halign_(
-#                 oj.Button_("submit", text="Create item (add to wiki)").event_handle(oj.click, on_submit_btnclick),
-#                 pcp=[mr/st/4]
-#             )
-#             print("submit btn spath = ", submit_.spath)
-                                
+            gm_tags = oj.PC.Subsubsection("Tags",
+                                         oj.AC.Textarea(key="tags_input",
+                                                        placeholder="enter tag for content",
+                                                        twsty_tags=[H/8]),
+                                         twsty_tags=[mr/st/4]
 
-#             # panel is what hooks into the page template
-#             oj.Halign_(
-#                 oj.StackV_("panel_core",
-#                            cgens=[title_,
-#                                   divider_,
-#                                   commentbox_,
-#                                   contentbox_,
-#                                   gm_title_,
-#                                   gm_divider_,
-#                                   gm_summary_,
-#                                   gm_tags_,
-#                                   submit_
-#                                   ]),
-#                 key="panel",
-#                 pcp=[H/full])
-            
-#     return renderer_pagebody
+                              )
+
+            # @ojr.ReactDomino
+            # def on_submit_btnclick(dbref, msg):
+            #     userinput = Dict()
+            #     userinput.comment = _ictx.comment_input.target.value
+            #     userinput.content = _ictx.content_input.target.value
+            #     userinput.summary = _ictx.summary_input.target.value
+            #     userinput.tags = _ictx.tags_input.target.value
+            #     userinput.wikiItem = wikiItem
+            #     print ("==== userinput===")
+            #     print(userinput)
+            #     print ("====================================")
+            #     return "/modify_wiki_item", ojr.make_opaque_dict(userinput)
 
 
-# wp_show = page_builder("wp_show_wikiItem",
-#                        "Show contents of a wiki item",
-#                        lambda request, wikiItem=wikiItem: show_wikiItem_bodygen(request, wikiItem))
-            
-# def wp_nonexistent_wikiItem(request, fqname):
-#     session_id = request.session_id
-#     session_manager = oj.get_session_manager(session_id)
-#     appstate = session_manager.appstate
+            submit =oj.Halign(oj.AC.Button(key="submit",
+                                           text="Create item (add to wiki)",
+                                           on_click = on_submit_btnclick
+                                           ),
+                              twsty_tags=[mr/st/4]
+                              )
 
-#     # Build href url for each itemtype
-#     query_str = "?itemtype=default&contenttype=text%2Fcsv%3Bcharset%3Dutf-8&template= HTTP/1.1"
-#     new_item_url = request.url_for("endpoint_wikiItem", item_name=fqname) + query_str
-#     print ("new item url = ", new_item_url)
-#     def panel_builder(session_manager):
-#         with session_manager.uictx("body") as bodyCtx:
-#             _ictx = bodyCtx
-#             aspan_ = oj.Span_("aspan", text=f"Requested item {fqname} does not exists in wiki")
-#             a_ = oj.Halign_(oj.A_("create ", href=new_item_url,
-#                                   title=f"Create wiki item {fqname}",
-#                                   text="create",
-#                                   pcp=[bold, #shadow,  shadow.sm, #TODO: fix shadow stuff
-#                                        bdr.md, bold]))
-#             oj.Align_(oj.StackV_("panel_core", cgens=[aspan_, a_]), key="panel", pcp=[H/full])
-#     wp =  page_builder("wp_nonexistent_wikiItem",
-#                         "Non Existent wiki item",
-#                         panel_builder
-#                         )(request)
-#     wp.session_manager = session_manager
-#     return wp
+            # panel is what hooks into the page template
+            panel = oj.Halign(oj.PC.StackV("panel_core",
+                                           childs=[title,
+                                                   divider,
+                                                   commentbox,
+                                                   contentbox,
+                                                   gm_title,
+                                                   gm_divider,
+                                                   gm_summary,
+                                                   gm_tags,
+                                                   submit
+                                                   ]),
+                              twsty_tags=[H/full])
+            return panel
+        return renderer_pagebody
+    
+
+
+
+
 
 def wp_nonexistent_wikiItem(request, fqname):
     query_str = "?itemtype=default&contenttype=text%2Fcsv%3Bcharset%3Dutf-8&template= HTTP/1.1"
@@ -298,7 +215,7 @@ def wp_nonexistent_wikiItem(request, fqname):
     return wp
    
     
-
+#TODO
 def wp_upload_new_csv(request):
     #Assume that session context is already active
     session_id = request.session_id
@@ -388,7 +305,7 @@ def endpoint_wikiItem(request, rev = CURRENT, item_name =None):
     wikiItem = WikiItem.create(fqcn, rev_id=rev, itemtype = itemtype, contenttype=contenttype)
     return renderhtml_wikiItem(request, wikiItem)
 
-
+endpoint_wikiItem.route_name = "endpoint_wikiItem"
 # def modify_wikiitem(request, item_name=None):
 #     """
 #     if wikiitem with name = item_name; then show its various content for edititng;
@@ -406,12 +323,12 @@ def endpoint_wikiItem(request, rev = CURRENT, item_name =None):
 # app.add_jproute("/{rev}/{item_name}", endpoint_wikiItem, "endpoint_wikiItem")
 # app.add_jproute("/{item_name}", endpoint_wikiItem, "endpoint_wikiItem")
 
-def build_app(**kwargs):
-    global app
-    app = jp.build_app(**kwargs)
-    app.add_jproute("/", wp_root, "root")
-    app.add_jproute("/{rev}/{item_name}", endpoint_wikiItem, "endpoint_wikiItem")
-    app.add_jproute("/{item_name}", endpoint_wikiItem, "endpoint_wikiItem")
+# def build_app(**kwargs):
+#     global app
+#     app = oj.build_app(**kwargs)
+#     app.add_jproute("/", wp_root, "root")
+#     app.add_jproute("/{rev}/{item_name}", endpoint_wikiItem, "endpoint_wikiItem")
+#     app.add_jproute("/{item_name}", endpoint_wikiItem, "endpoint_wikiItem")
     
 
     
@@ -431,23 +348,34 @@ def build_app(**kwargs):
 
 ui_app_trmap_iter = [
     ]
+app = oj.load_app()
 
-def wp_root(request):
-    """
+
+aspan = oj.PC.Span(text="dummy text"
+                   )
+
+wp_root = oj.create_endpoint(key="wp_root",
+                                 childs=[aspan],
+                                 title="The root page for wiki"
+                                 )
+wp_root.redirect ="/Home"
+oj.add_jproute("/", wp_root)
+oj.add_jproute("/{rev}/{item_name}", endpoint_wikiItem)
+oj.add_jproute("/{item_name}", endpoint_wikiItem)
     
-    """
-    aspan = oj.PC.Span(text="dummy text"
-                      )
-        
-    wp_template = oj.Mutable.WebPage(key="wp_root",
-                              childs = [aspan],
-                                     #ui_app_trmap_iter = ui_app_trmap_iter,
-                                     #action_module = actions,
-                              title="The root page for wiki"
-                              )
-    wp_endpoint = oj.create_endpoint(wp_template)
-    wp_endpoint.redirect = "/Home"
-    return wp_endpoint
+# def wp_root(request):
+#     """
+    
+#     """
+
+#     # wp_template = oj.Mutable.WebPage(key="wp_root",
+#     #                           childs = [aspan],
+#     #                                  #ui_app_trmap_iter = ui_app_trmap_iter,
+#     #                                  #action_module = actions,
+#     #                                  title="The root page for wiki"
+#     #                           )
+#     # wp_endpoint = oj.create_endpoint(wp_template)
+#     return wp_endpoint
 
 
 
