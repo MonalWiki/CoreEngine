@@ -31,52 +31,83 @@ app = None
 
 
 
-def show_wikiItem_(wikiItem):
+def show_wikiItem(wikiItem):
     """
     render the content of the wikiItem based on the contenttype 
-
     """
-    def renderer_pagebody(session_manager):
-        with session_manager.uictx("body") as bodyCtx:
-            _ictx=bodyCtx
+    def renderer_pagebody():
+        with oj.uictx("body") as bodyCtx:
             assert  wikiItem.content.contenttype != CONTENTTYPE_NONEXISTENT
             print("show this data online = ", wikiItem.rev.data)
             oj.Span_("panel",  text="i am a span:dryrun")
             print("chasing contenttype and data")
             print ("===> contenttype = ", wikiItem.content.contenttype)
-
             print ("===>  = ", wikiItem.rev.revid)
+
+        return rendered
             
     
     return renderer_pagebody
 
 
+# def show_wikiItem_(wikiItem):
+#     """
+#     render the content of the wikiItem based on the contenttype 
 
-def modify_wikiItem_(wikiItem):
+#     """
+#     def renderer_pagebody(session_manager):
+#         with session_manager.uictx("body") as bodyCtx:
+#             _ictx=bodyCtx
+#             assert  wikiItem.content.contenttype != CONTENTTYPE_NONEXISTENT
+#             dummy_text = """# Hello\n##HELLOHELLO
+#             """
+#             with open('app_input.md', 'r') as fin: 
+#                 rendered = mistletoe.markdown(fin,
+#                                               mistletoe.OfjustpyRenderer,
+#                                               session_manager = session_manager,
+#                                               #md_view_handlers = md_view_handlers,
+#                                               )
+#                 # generate mditems under name panel
+#                 #rendered("panel") 
+#             print("show this data online = ", wikiItem.rev.data)
+#             oj.Span_("panel",  text="i am a span:dryrun")
+            
+#             print("chasing contenttype and data")
+#             print ("===> contenttype = ", wikiItem.content.contenttype)
+
+#             print ("===>  = ", wikiItem.rev.revid)
+            
+            
+    
+#     return renderer_pagebody
+
+
+
+def modify_wikiItem(wikiItem):
     """
     render the content of the wikiItem based on the contenttype 
-
     """
-    def renderer_pagebody(session_manager):
-        with session_manager.uictx("body") as bodyCtx:
-            _ictx=bodyCtx
-            
-            title_ = oj.Halign_(oj.Span_("itemtitle_body",
-                               text=wikiItem.fqcn.fullname(),
-                                        pcp=[fz.xl2, fw.bold]
-                                        ),
-                                key="itemtitle")
+    def renderer_pagebody():
+        with oj.uictx("body") as bodyCtx:
+            title = oj.Halign(oj.PC.Span(text=wikiItem.fqcn.fullname(),
+                                          twsty_tags=[fz.xl2, fw.bold]
+                                          )
+                               )
 
-            divider_ = oj.Divider_("title_divider")
-            commentbox_ = oj.Subsubsection_("comment", "Comment",
-                             oj.Textarea_("comment_input", placeholder="enter comments for wiki item here", pcp=[W/full, H/8])
-                             )
+            divider = oj.Hr("title_divider", twsty_tags=[])
+            commentbox = oj.PC.Subsubsection("Comment",
+                                              oj.AC.Textarea(key="comment_input",
+                                                             placeholder="enter comments for wiki item here",
+                                                             twsty_tags=[W/full, H/8])
+                                              )
 
-            contentbox_ = oj.Subsubsection_("content", "Content",
-                                            oj.Textarea_("content_input",
-                                                         placeholder="enter wiki item content here", pcp=[H/32 ]),
-                                            pcp = [mr/st/8]
-                             )
+            contentbox = oj.PC.Subsubsection("Content",
+                                              oj.AC.Textarea(key="content_input",
+                                                             placeholder="enter wiki item content here",
+                                                             twsty_tags=[H/32]
+                                                             ),
+                                              twsty_tags = [mr/st/8]
+                                              )
 
 
             #gm<-- generalmeta
@@ -131,39 +162,142 @@ def modify_wikiItem_(wikiItem):
                 key="panel",
                 pcp=[H/full])
             
-    return renderer_pagebody
+#             title_ = oj.Halign_(oj.Span_("itemtitle_body",
+#                                text=wikiItem.fqcn.fullname(),
+#                                         pcp=[fz.xl2, fw.bold]
+#                                         ),
+#                                 key="itemtitle")
+
+#             divider_ = oj.Divider_("title_divider")
+#             commentbox_ = oj.Subsubsection_("comment", "Comment",
+#                              oj.Textarea_("comment_input", placeholder="enter comments for wiki item here", pcp=[W/full, H/8])
+#                              )
+
+#             contentbox_ = oj.Subsubsection_("content", "Content",
+#                                             oj.Textarea_("content_input",
+#                                                          placeholder="enter wiki item content here", pcp=[H/32 ]),
+#                                             pcp = [mr/st/8]
+#                              )
+
+
+#             #gm<-- generalmeta
+#             gm_title_ = oj.Halign_(oj.Span_("gm_title_body",
+#                                          text="General Meta",
+#                                          pcp=[fz.lg, fw.bold]
+#                                         ),
+#                                 align="start",
+#                                    key="itemtitle",
+#                                    pcp=[mr/st/8])
+#             gm_divider_ = oj.Divider_("gm_divider")
+#             gm_summary_ = oj.Subsubsection_("gm_summary", "Summary",
+#                                             oj.Textarea_("summary_input", placeholder="enter summary for changes", pcp=[H/8]), pcp=[mr/st/8]
+#                               )
+#             gm_tags_ = oj.Subsubsection_("gm_tags", "Tags",
+#                                          oj.Textarea_("tags_input",
+#                                                       placeholder="enter tag for content",
+#                                                       pcp=[H/8]),
+#                                          pcp=[mr/st/4]
+
+#                               )
+
+#             @ojr.ReactDomino
+#             def on_submit_btnclick(dbref, msg):
+#                 userinput = Dict()
+#                 userinput.comment = _ictx.comment_input.target.value
+#                 userinput.content = _ictx.content_input.target.value
+#                 userinput.summary = _ictx.summary_input.target.value
+#                 userinput.tags = _ictx.tags_input.target.value
+#                 userinput.wikiItem = wikiItem
+#                 print ("==== userinput===")
+#                 print(userinput)
+#                 print ("====================================")
+#                 return "/modify_wiki_item", ojr.make_opaque_dict(userinput)
+
+            
+#             submit_ =oj.Halign_(
+#                 oj.Button_("submit", text="Create item (add to wiki)").event_handle(oj.click, on_submit_btnclick),
+#                 pcp=[mr/st/4]
+#             )
+#             print("submit btn spath = ", submit_.spath)
+                                
+
+#             # panel is what hooks into the page template
+#             oj.Halign_(
+#                 oj.StackV_("panel_core",
+#                            cgens=[title_,
+#                                   divider_,
+#                                   commentbox_,
+#                                   contentbox_,
+#                                   gm_title_,
+#                                   gm_divider_,
+#                                   gm_summary_,
+#                                   gm_tags_,
+#                                   submit_
+#                                   ]),
+#                 key="panel",
+#                 pcp=[H/full])
+            
+#     return renderer_pagebody
 
 
 # wp_show = page_builder("wp_show_wikiItem",
 #                        "Show contents of a wiki item",
 #                        lambda request, wikiItem=wikiItem: show_wikiItem_bodygen(request, wikiItem))
             
-def wp_nonexistent_wikiItem(request, fqname):
-    session_id = request.session_id
-    session_manager = oj.get_session_manager(session_id)
-    appstate = session_manager.appstate
+# def wp_nonexistent_wikiItem(request, fqname):
+#     session_id = request.session_id
+#     session_manager = oj.get_session_manager(session_id)
+#     appstate = session_manager.appstate
 
-    # Build href url for each itemtype
+#     # Build href url for each itemtype
+#     query_str = "?itemtype=default&contenttype=text%2Fcsv%3Bcharset%3Dutf-8&template= HTTP/1.1"
+#     new_item_url = request.url_for("endpoint_wikiItem", item_name=fqname) + query_str
+#     print ("new item url = ", new_item_url)
+#     def panel_builder(session_manager):
+#         with session_manager.uictx("body") as bodyCtx:
+#             _ictx = bodyCtx
+#             aspan_ = oj.Span_("aspan", text=f"Requested item {fqname} does not exists in wiki")
+#             a_ = oj.Halign_(oj.A_("create ", href=new_item_url,
+#                                   title=f"Create wiki item {fqname}",
+#                                   text="create",
+#                                   pcp=[bold, #shadow,  shadow.sm, #TODO: fix shadow stuff
+#                                        bdr.md, bold]))
+#             oj.Align_(oj.StackV_("panel_core", cgens=[aspan_, a_]), key="panel", pcp=[H/full])
+#     wp =  page_builder("wp_nonexistent_wikiItem",
+#                         "Non Existent wiki item",
+#                         panel_builder
+#                         )(request)
+#     wp.session_manager = session_manager
+#     return wp
+
+def wp_nonexistent_wikiItem(request, fqname):
     query_str = "?itemtype=default&contenttype=text%2Fcsv%3Bcharset%3Dutf-8&template= HTTP/1.1"
     new_item_url = request.url_for("endpoint_wikiItem", item_name=fqname) + query_str
-    print ("new item url = ", new_item_url)
-    def panel_builder(session_manager):
-        with session_manager.uictx("body") as bodyCtx:
-            _ictx = bodyCtx
-            aspan_ = oj.Span_("aspan", text=f"Requested item {fqname} does not exists in wiki")
-            a_ = oj.Halign_(oj.A_("create ", href=new_item_url,
-                                  title=f"Create wiki item {fqname}",
-                                  text="create",
-                                  pcp=[bold, #shadow,  shadow.sm, #TODO: fix shadow stuff
-                                       bdr.md, bold]))
-            oj.Align_(oj.StackV_("panel_core", cgens=[aspan_, a_]), key="panel", pcp=[H/full])
-    wp =  page_builder("wp_nonexistent_wikiItem",
-                        "Non Existent wiki item",
-                        panel_builder
-                        )(request)
-    wp.session_manager = session_manager
-    return wp
 
+    def body_panel_builder():
+        with oj.uictx("body") as bodyCtx:
+            aspan = oj.PC.Span(text=f"Requested item {fqname} does not exists in wiki")
+            create_link = oj.Halign(oj.AC.A(key = "create",
+                              href=new_item_url,
+                                      title=f"Create wiki item {fqname}",
+                                      text="Create item",
+                                      twsty_tags=[bold, #shadow,  shadow.sm, #TODO: fix shadow stuff
+                                                  bdr.md,
+                                                  bold]
+                              )
+                      )
+            panel = oj.Halign(oj.PC.StackV(childs=[aspan, create_link]),  twsty_tags=[H/full])
+        return panel
+    wp_endpoint =  page_builder("wp_nonexistent_wikiItem",
+                        "Non Existent wiki item",
+                        body_panel_builder
+                        )
+    wp = wp_endpoint(request)
+    print("wp= ", wp)
+    print(type(wp))
+    return wp
+   
+    
 
 def wp_upload_new_csv(request):
     #Assume that session context is already active
@@ -201,7 +335,7 @@ def renderhtml_wikiItem(request, wikiItem, session_manager=None):
     wikiItem.content is of type Content: [NonExistent| CSV]
     """
     print ("render wikiItem: itemtype= ", wikiItem.itemtype)
-    
+
     
     if wikiItem.itemtype == ITEMTYPE_NONEXISTENT:
         #we assume that user has right to create (see moninwiki/src/items/__init__.py:1455)
@@ -231,9 +365,14 @@ def renderhtml_wikiItem(request, wikiItem, session_manager=None):
         if wikiItem.rev.revid is not  None:
             # this is a fully fledged filled out item : show it.
             print(" render a full fledged item ")
-            return page_builder("wp_show_wikiItem",
-                        "show_wikiItem", show_wikiItem_(wikiItem)
-                                )(request)
+            wp_endpoint = page_builder("wp_show_wikiItem",
+                                       "show_wikiItem",
+                                       show_wikiItem(wikiItem)
+                                )
+
+            print("wp_endpoint = ", wp_endpoint)
+            wp = wp_endpoint(request)
+            return wp
 
     assert False
     
@@ -297,34 +436,20 @@ def wp_root(request):
     """
     
     """
-    session_id = request.session_id
-    session_manager = oj.get_session_manager(session_id)
-    appstate = session_manager.appstate
-
-    # This is only a bandaid fix
-    # session manager should come from
-    # middleware jj
-    request.session_manager = session_manager
-    with oj.sessionctx(session_manager):
-        aspan_ = oj.Span_("aspan", text="dummy text"
-                 )
-        cgens = [aspan_]
-        wp = oj.WebPage_("wp_root",
-                         cgens= cgens,
-                         WPtype=ojr.WebPage,
-                         ui_app_trmap_iter = ui_app_trmap_iter,
-                         session_manager = session_manager,
-                         template_file='svelte.html',
-                         action_module = actions,
-                         title="The root page for wiki")()
-        wp.session_manager = session_manager
-        wp.redirect = "/Home"
-    return wp
+    aspan = oj.PC.Span(text="dummy text"
+                      )
+        
+    wp_template = oj.Mutable.WebPage(key="wp_root",
+                              childs = [aspan],
+                                     #ui_app_trmap_iter = ui_app_trmap_iter,
+                                     #action_module = actions,
+                              title="The root page for wiki"
+                              )
+    wp_endpoint = oj.create_endpoint(wp_template)
+    wp_endpoint.redirect = "/Home"
+    return wp_endpoint
 
 
 
-
-#jp.CastAsEndpoint(wp_root, "/", "endpoint_root")
-#jp.Route("/", wp_root)
 
 

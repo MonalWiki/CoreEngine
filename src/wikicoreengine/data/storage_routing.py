@@ -67,6 +67,16 @@ def storage_routing(namespaces, storage_base_dir):
     def retrieve(namespace, revid):
         namespace_storage_manager = namespace_storage_map[namespace]
         return namespace_storage_manager.retrieve(revid)
+
+
+    def update_item(namespace, dataid, content):
+        """
+        this function is illegal. In the wiki we are
+        only allowed to create revisions. But these are
+        initial days.
+        """
+        namespace_storage_manager = namespace_storage_map[namespace]
+        return namespace_storage_manager.update_item(dataid, content)
     
     def commit():
         for namespace in namespace_storage_map.keys():
@@ -76,6 +86,7 @@ def storage_routing(namespaces, storage_base_dir):
     storage_routing.store = store
     storage_routing.retrieve = retrieve
     storage_routing.commit = commit
+    storage_routing.update_item = update_item
     storage_routing.namespace_storage_map = namespace_storage_map
     #storage_routing.get_item = get_item 
     

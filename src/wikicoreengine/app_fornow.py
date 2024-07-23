@@ -1,5 +1,5 @@
 """
-top level app for devel purposes; we need session_manager and session context to be pypassed/fastshippedhtml/render functitons 
+top level app for devel purposes; we need session_manager and session context to be passed/fastshippedhtml/render functitons 
 """
 import os
 import logging
