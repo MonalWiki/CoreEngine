@@ -110,10 +110,10 @@ def indexible_content(meta, data, is_new=False):
     assert meta[CONTENTTYPE] is not None
 
     match meta[CONTENTTYPE]:
-        case Content_NonExistent.type:
+        case Content_NonExistent.contenttype:
             assert False
             
-        case Content_Markdown.type:
+        case Content_Markdown.contenttype:
             doc  = Content_Markdown.to_plain_text(data)
         
     return doc
@@ -514,7 +514,9 @@ def get_storage_revision(fqcn:Name.CompositeName, itemtype=None, contenttype=Non
         #TODO: use protected storage. not up yet
         #Instead use indexes and  return IndexItem 
         #item = flaskg.storage.get_item(**fqname.query)
+    print ("1")
     idxQueryAnswer = indexes.query(**fqcn.query())
+    print ("2")
     # else:
     #     if item.fqname:
     #         fqcn = item.fqcn
@@ -524,15 +526,16 @@ def get_storage_revision(fqcn:Name.CompositeName, itemtype=None, contenttype=Non
     # we don't know how ITEMID is getting/initialized used
     # Therefore searching for REVID in the query result (i.e.,
     # item.current)
-    
+    print ("3")
     if not  idxQueryAnswer.answer:
         # if no such item with given fqcn exists 
         #item = Dummy.Item.create(fqcn)
         # We will use whatever is retured by indexes.create (i.e, create an item)
         rev = Dummy.Revision.create(idxQueryAnswer,  itemtype, contenttype)
-
+        print ("4")
     else:
         rev = Revision.create(idxQueryAnswer, rev_id)
+        print ("5")
         # try:
         #     rev = Revision.create(item, rev_id)
         # except Exception as e:

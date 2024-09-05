@@ -1,5 +1,5 @@
 import logging
-from moin.constants.keys import CURRENT
+#from moin.constants.keys import CURRENT
 import justpy as jp
 import importlib
 import os

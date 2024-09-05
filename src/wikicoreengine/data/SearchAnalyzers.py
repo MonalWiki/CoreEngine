@@ -8,7 +8,7 @@ MoinMoin - Misc. tokenizers and analyzers for whoosh indexing
 from whoosh.analysis import MultiFilter, IntraWordFilter, LowercaseFilter
 from whoosh.analysis import Tokenizer, Token, RegexTokenizer
 
-from moin.security import AccessControlList
+#from moin.security import AccessControlList
 
 
 class MimeTokenizer(Tokenizer):
@@ -151,7 +151,9 @@ class AclTokenizer(Tokenizer):
                 tk.pos = pos
             yield tk
         else:
-            acl = AccessControlList([value], valid=self._acl_rights_contents)
+            #acl = AccessControlList([value], valid=self._acl_rights_contents)
+            raise ValueError("ACL Tokenizer has been turned off")
+            assert False
             for name, permissions in acl.acl:
                 for permission in permissions:
                     sign = "+" if permissions[permission] else "-"

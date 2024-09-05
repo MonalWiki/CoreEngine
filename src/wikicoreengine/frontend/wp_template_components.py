@@ -76,7 +76,7 @@ def render_nav_bar():
                                       ]
                                 )
 
-    item_nav  = oj.PD.StackH("itemviews",
+    item_nav  = oj.PD.StackH(key="itemviews",
                               childs = [
                                   oj.PD.Span(key="itemview", text="Item views", pcp=[fw.bold]),
                                   oj.PD.Span(key="show", href="#", text="modify"),
@@ -97,15 +97,15 @@ def render_nav_bar():
                                       childs = [top_level_nav, page_trail, item_nav]),
                                "end"
                          )
-
     cgens = [
             oj.PD.A(key="HomeAnchor", twsty_tags=[fc/gray/9, fz.xl, fw.extrabold],
                   href="#", text="PutWikiTitleHere"),
 
              navpanel
         ]
-    
-    abox = oj.PD.StackH(key="abox", cgens = cgens,
+
+
+    abox = oj.PD.StackH(key="abox", childs = cgens,
                         twsty_tags=[pd/y/4,  ji.center, jc.between])
     
     return oj.PD.Nav(key="panel", childs=[abox])
@@ -144,24 +144,36 @@ def render_footer():
         return panel
 
 
-def page_builder(page_key, title, builder_pagebody, **kwargs):
+def page_builder(page_key, childs,  **kwargs):
+    """
+    childs: list
+    """
+    print ("using page_builder to build out the pages")
+    nav_panel = render_nav_bar()
+    footer = render_footer()
     with oj.uictx("tlctx"):
-        nav_panel = render_nav_bar()
-        body_panel = builder_pagebody()
-        footer = render_footer()
         tlc = oj.PC.Container(childs = [nav_panel,
-                                  body_panel,
-                                  footer
+                                        *childs,
+                                        footer
                                   ],
                         twsty_tags =[H/screen]
                         )
 
-        wp_template = oj.Mutable.WebPage(key=page_key,
-                             childs = [tlc
-                                       ],
-                             title=title
-                  )
-        return wp_template
+        # consider option for  SSR as well
+        return ojr.ResponsiveStatic_CSR_WebPage(key=page_key,
+                                                       childs=[tlc],
+                                                       cookie_state_attr_names=oj.aci.the_starlette_app.cookie_state_attr_names,
+                                                       csr_bundle_dir="hyperui",
+                                                       **kwargs
+                                                       )
+            
+        # wp_template = oj.Mutable.WebPage(key=page_key,
+        #                      childs = [tlc
+        #                                ],
+        #                                  title=title,
+        #                                  csr_bundle_dir="hyperui"
+        #           )
+        # return wp_template
 
 
 

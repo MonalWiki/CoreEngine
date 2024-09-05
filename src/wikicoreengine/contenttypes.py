@@ -24,7 +24,7 @@ class NonExistent:
     group = None
     item = None
 
-NonExistent.type = CONTENTTYPE_NONEXISTENT
+NonExistent.contenttype = CONTENTTYPE_NONEXISTENT
 
 @dataclass    
 class CSV:

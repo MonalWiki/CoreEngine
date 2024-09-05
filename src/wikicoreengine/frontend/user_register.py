@@ -32,6 +32,8 @@ def wp_register_user(request):
         aspan_ = oj.Span_("aspan", text="this should turn into a login page"
                  )
         cgens = [aspan_]
+        # fix cgens to childs 
+        assert False
         wp = oj.WebPage_("wp_root",
                          cgens= cgens,
                          WPtype=ojr.WebPage,

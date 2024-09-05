@@ -81,6 +81,7 @@ def wp_register_user(request):
                                                             on_input_change
                                                             )
 
+        assert False
         all_inputs_ = oj.StackV_("all_inputs",
                                  cgens = [username_input_,
                                           email_input_,
@@ -96,7 +97,8 @@ def wp_register_user(request):
                                         on_submit_click
                                           )
 
-        
+        # fix cgens to childs 
+        assert False
         wp = oj.WebPage_("wp_root",
                          cgens= [target_],
                          WPtype=ojr.WebPage,

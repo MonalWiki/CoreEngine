@@ -42,10 +42,14 @@ def startup_func():
     pass
 
 
-view_function.build_app(startup_func = startup_func)
 from addict import Dict
 from .contenttypes import CONTENTTYPE_MARKDOWN
 from .constant_keys import ITEMTYPE_DEFAULT
+
+FORMAT = "[%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s"
+logging.basicConfig(filename="launcher.log",
+                    level=logging.DEBUG, format=FORMAT)
+
 
 app = view_function.app
 

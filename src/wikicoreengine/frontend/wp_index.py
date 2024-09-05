@@ -25,7 +25,8 @@ def wp_index_bodygen(session_manager):
             pass
 
         #Select All  Download  Delete  Destroy  Filter  Namespace  New Item
-         
+        # fix cgens to childs 
+        assert False         
         actionbtns_ = oj.Halign_(
             oj.StackH_("actionbtns", cgens  = [
             oj.Button_("selectall", text="Select all").event_handle(oj.click, on_actionbtn_click),
@@ -38,7 +39,8 @@ def wp_index_bodygen(session_manager):
             ]
                        ),
             "start")
-
+        # fix cgens to childs 
+        assert False
         indexbtns_ = oj.Halign_(
             oj.StackH_("indexbtns", cgens  = [
             oj.Button_("showall", text="Show all all").event_handle(oj.click, on_actionbtn_click),
@@ -59,6 +61,8 @@ def wp_index_bodygen(session_manager):
                   ]
         
         ojx.Table_("itemtbl", values, add_cbox=True)
+        # fix cgens to childs 
+        assert False
         oj.StackV_("panel",
                    cgens = [_ictx.pagetitle, _ictx.bodyFooterDivider, actionbtns_, indexbtns_, _ictx.itemtbl])
 

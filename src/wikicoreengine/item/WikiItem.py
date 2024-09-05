@@ -57,16 +57,18 @@ def create(fqcn:Name.CompositeName, itemtype=ITEMTYPE_NONEXISTENT, contenttype=C
     assert item is None
     # we currently allow only.rev to be created via query over indexes 
     rev = get_storage_revision(fqcn, itemtype, contenttype, rev_id)
-    
+    print("1")
     if rev.idxitem.answer is not None:
         # if there is already an entry for the query 
         contenttype = rev.idxitem.answer.get(CONTENTTYPE) or contenttype
     content = get_content(contenttype)
-    
+    print("2")
     if  rev.idxitem.answer  is not None:
         itemtype = rev.idxitem.answer.get(ITEMTYPE) or itemtype or ITEMTYPE_DEFAULT
 
+    print("3")        
     item = get_item(itemtype, fqcn, rev=rev, content=content)
+    print("4")
     content.item = item
     return item
 

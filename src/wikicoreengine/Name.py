@@ -83,8 +83,8 @@ def url_to_compositeName(url):
         url: 'ns1/Page' return 'ns1', '', 'Page'
         url: 'ns1/ns2/@notfield' return 'ns1/ns2', '', '@notfield'
     """
-    print ("----------")
-    print ("in compositeName = ", url)
+
+
     if not url:
         return CompositeName('', NAME_EXACT, '')
     # SystemDesign: We currently are not implementing this whole trailing / loging 
